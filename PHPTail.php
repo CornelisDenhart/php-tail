@@ -7,7 +7,12 @@ class PHPTail {
 	 * Location of the log file we're tailing
 	 * @var string
 	 */
-	private	$log = "";
+	private $filename = "";
+	/**
+	 * Location of the log file we're tailing
+	 * @var string
+	 */
+	private $log = "";
 	/**
 	 * The time between AJAX requests to the server. 
 	 * 
@@ -27,8 +32,10 @@ class PHPTail {
 	 * @param integer $defaultUpdateTime The time between AJAX requests to the server. 
 	 * @param integer $maxSizeToLoad This variable holds the maximum amount of bytes this application can load into memory (in bytes). Default is 2 Megabyte = 2097152 byte
 	 */
-	public function __construct($log, $defaultUpdateTime = 2000, $maxSizeToLoad = 2097152) {
-		$this->log = $log;
+	public function __construct($folder, $filename, $defaultUpdateTime = 1000, $maxSizeToLoad = 2097152) {
+		#$this->folder = $folder;
+		$this->filename = $filename;
+		$this->log = $folder."/".$filename;
 		$this->updateTime = $defaultUpdateTime;
 		$this->maxSizeToLoad = $maxSizeToLoad;
 	}
@@ -160,7 +167,7 @@ class PHPTail {
 								$( "#settings" ).dialog('close');
 							}
 						});		
-						//Focus on the textarea					
+						//Focus on the textarea
 						$("#grep").focus();
 						//Settings button into a nice looking button with a theme
 						$("#grepKeyword").button();
@@ -208,7 +215,7 @@ class PHPTail {
 					//This function scrolls to the bottom
 					function scrollToBottom() {
 						$('.ui-widget-overlay').width($(document).width());
-					    $('.ui-widget-overlay').height($(document).height());
+						$('.ui-widget-overlay').height($(document).height());
 
 						$("html, body").scrollTop($(document).height());
 						if($( "#settings" ).dialog("isOpen")) {
@@ -219,7 +226,7 @@ class PHPTail {
 					}
 					//This function queries the server for updates.
 					function updateLog() {
-						$.getJSON('Log.php?ajax=1&lastsize='+lastSize + '&grep='+grep + '&invert='+invert, function(data) {
+						$.getJSON('Log.php?filename=<?php echo ($this->filename); ?>&ajax=1&lastsize='+lastSize + '&grep='+grep + '&invert='+invert, function(data) {
 							lastSize = data.size;
 							$.each(data.data, function(key, value) { 
 								$("#results").append('' + value + '<br/>');
