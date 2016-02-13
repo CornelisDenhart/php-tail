@@ -4,12 +4,12 @@ class PHPTail {
 	
 	
 	/**
-	 * Location of the log file we're tailing
+	 * Name of the log file we're tailing, just the filename without folder name
 	 * @var string
 	 */
 	private $filename = "";
 	/**
-	 * Location of the log file we're tailing
+	 * Location of the log file we're tailing, complete path, folder + filename 
 	 * @var string
 	 */
 	private $log = "";
@@ -70,7 +70,7 @@ class PHPTail {
 		if($maxLength > 0) {
 			
 			$fp = fopen($this->log, 'r');
-			fseek($fp, -$maxLength , SEEK_END); 
+			fseek($fp, -$maxLength , SEEK_END);
 			$data = explode("\n", fread($fp, $maxLength));
 			
 		}
@@ -89,7 +89,7 @@ class PHPTail {
 		if(end($data) == "") {
 			array_pop($data);
 		}
-		return json_encode(array("size" => $fsize, "data" => $data));	
+		return json_encode(array("size" => $fsize, "data" => $data));
 	}
 	/**
 	 * This function will print out the required HTML/CSS/JS
@@ -97,10 +97,10 @@ class PHPTail {
 	public function generateGUI() {
 		?>
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
 			<head>
-				<title>PHPTail</title> 
+				<title>PHPTail [<?php echo$this->filename; ?>]</title> 
 				<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
 				<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/flick/jquery-ui.css" rel="stylesheet"></link>
@@ -166,7 +166,7 @@ class PHPTail {
 							if(e.keyCode == 13) {
 								$( "#settings" ).dialog('close');
 							}
-						});		
+						});
 						//Focus on the textarea
 						$("#grep").focus();
 						//Settings button into a nice looking button with a theme
@@ -180,17 +180,17 @@ class PHPTail {
 						setInterval ( "updateLog()", <?php echo $this->updateTime; ?> );
 						//Some window scroll event to keep the menu at the top
 						$(window).scroll(function(e) {
-						    if ($(window).scrollTop() > 0) { 
-						        $('.float').css({
-						            position: 'fixed',
-						            top: '0',
-						            left: 'auto'
-						        });
-						    } else {
-						        $('.float').css({
-						            position: 'static'
-						        });
-						    }
+							if ($(window).scrollTop() > 0) { 
+								$('.float').css({
+									position: 'fixed',
+									top: '0',
+									left: 'auto'
+								});
+							} else {
+								$('.float').css({
+									position: 'static'
+								});
+							}
 						});
 						//If window is resized should we scroll to the bottom?
 						$(window).resize(function(){
@@ -220,8 +220,8 @@ class PHPTail {
 						$("html, body").scrollTop($(document).height());
 						if($( "#settings" ).dialog("isOpen")) {
 							$('.ui-widget-overlay').width($(document).width());
-						    $('.ui-widget-overlay').height($(document).height());
-						    $( "#settings" ).dialog("option", "position", "center");
+							$('.ui-widget-overlay').height($(document).height());
+							$( "#settings" ).dialog("option", "position", "center");
 						}
 					}
 					//This function queries the server for updates.
