@@ -10,7 +10,7 @@ My addition is the ability to access a file of choice as an URL parameter instea
 There is at least another fork of the google's original repository at https://github.com/taktos/php-tail implementing multi-file functionality.
 
 ## Usage
-* Get PHPTail.php and Log.php and put them your webspace
+* Get PHPTail.php and Log.php and put them into your webspace
 * Review line 17 of Log.php to define your document root folder
 * Upload the 2 files to your webspace
 * Access http://MyServer/Log.php?filename=MyFile.txt in your browser
@@ -18,6 +18,7 @@ There is at least another fork of the google's original repository at https://gi
 ## Tuning
 * The default update interval is 1 Second. Review line 35 in PHPtail.php to change this.
 * If you like to change the name of 'Log.php', adjust line 229 in PHPtail.php accordingly.
+* If you like to change the title of the webpage, adjust line 103 in PHPtail.php accordingly.
 
 ## Caveats
 * This application uses jQuery by linking directly to google's servers, which is good for performance but might include privacy issues
